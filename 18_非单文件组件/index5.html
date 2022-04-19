@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一个重要的内置关系</title>
+    <!--引入Vue-->
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<!--
+				1.一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+				2.为什么要有这个关系：让组件实例对象（vc）可以访问到 Vue原型上的属性、方法。
+		-->
+
+<!--准备好一个容器-->
+<div id="root">
+    <!--  一写<school></school>这个，立马就帮我new VueComponent()  -->
+    <school></school>
+</div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+    //定义school组件   组件的本质就是VueComponent   就是说下面的school其实就是一个VueComponent
+    const school = Vue.extend({
+        name: 'school',
+        template: `
+          <div>
+          <h2>学校名称：{{ name }}</h2>
+          <h2>学校地址：{{ address }}</h2>
+          <button @click="showX">点我输出x</button>
+          </div>
+        `,
+        data() {
+            return {
+                name: '尚硅谷',
+                address: '北京'
+            }
+        },
+        methods:{
+            showX() {
+                //this指的是school
+                console.log(this.x)
+            }
+        }
+    })
+
+    new Vue({
+        el:'#root',
+        data:{
+            name:'你好！'
+        },
+        components:{
+            school
+        }
+    })
+
+    // console.log(school.prototype.__proto__ === Vue.prototype)
+
+    //忘了原型对象啥意思了，看下面，立马懂
+    /*
+    //定义一个构造函数
+    function Demo() {
+        this.a = 1
+        this.b = 2
+    }
+    //创建一个Demo的实例对象
+    const d = new Demo()
+
+    //无论是函数Demo身上的显示原型属性，还是d实例身上的隐式原型属性，这俩属性统统都指向一个对象，
+    //这个对象被称之为   原型对象
+    console.log(Demo.prototype)//显示原型属性
+    console.log(d.__proto__)//隐式原型属性
+
+    //程序员通过显示原型属性操作原型对象，追加一个x属性，值为99
+    Demo.prototype.x = 99
+    //程序员一般通过显示原型属性（Demo.prototype）向原型对象上添加东西，然后程序在执行的时候
+    //程序自己再通过隐式原型属性（d.__proto__，一般写成实例对象.属性名，比如下面两个方式）去原型对象上找东西
+    // console.log(d.__proto__.x)
+    console.log('@',d.x)
+    */
+    //实例的隐式原型属性永远指向自己缔造者的原型对象
+</script>
+</html>

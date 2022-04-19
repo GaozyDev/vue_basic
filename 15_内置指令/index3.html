@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-cloak指令</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<!--
+				v-cloak指令（没有值）：
+						1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+						2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+		-->
+<!--此段代码流程是：页面先生成html界面，本身页面应该出现{{name}}，但是由于给v-cloak设置了display:none属性
+页面就不出现{{name}}，当5s之后引入了vue.js，vue一旦接管容器，上来就做了一件事，把v-cloak移除，v-cloak
+一移除，{{name}}插值语法代表的'尚硅谷'就立马显示-->
+
+<!--准备好一个容器-->
+<div id="root">
+    <h2 v-cloak>{{name}}</h2>
+</div>
+<!--引入Vue-->
+<!--这个地方本应该从服务器引入vue.js，但是我没有服务器，就只能这样写-->
+<!--下面代码表示：从http://localhost:8080本机的resource服务器5s之后引入vue.js-->
+<!--<script type="text/javascript" src="http://localhost:8080/resource/5s/vue.js"></script>-->
+<script type="text/javascript" src="../js/vue.js"></script>
+</body>
+
+
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+    new Vue({
+        el:'#root',
+        data:{
+            name:'尚硅谷'
+        }
+    })
+</script>
+</html>

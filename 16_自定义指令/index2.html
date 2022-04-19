@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>回顾一个DOM操作</title>
+    <!--引入Vue-->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        .demo {
+            background-color: orange;
+        }
+    </style>
+</head>
+<body>
+<button id="btn">点我创建一个输入框</button>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+    const btn = document.getElementById('btn')
+    btn.onclick = () => {
+        const input = document.createElement('input')
+
+        document.body.appendChild(input)
+
+        //属于bind区域   元素和指令绑定好了，但是还没放到页面
+        input.className = 'demo'
+        input.value = 99
+        input.onclick = ()=>{alert(1)}
+
+        input.focus()
+        input.parentElement.style.backgroundColor = 'skyblue'
+    }
+</script>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表过滤</title>
+    <!--引入Vue-->
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<!--准备好一个容器-->
+<div id="root">
+    <h2>人员列表</h2>
+    <input type="text" placeholder="请输入名字" v-model="keyWord">
+    <ul>
+        <li v-for="(person,id) in filPersons" :key="id">
+            {{person.name}}-{{person.age}}-{{person.sex}}
+        </li>
+    </ul>
+</div>
+
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+    //用watch实现
+    /*const vm = new Vue({
+        el: '#root',
+        data: {
+            keyWord: '',
+            persons: [
+                {id: '001', name: '马冬梅', age: 25, sex: '女'},
+                {id: '002', name: '周冬雨', age: 18, sex: '女'},
+                {id: '003', name: '周杰伦', age: 40, sex: '男'},
+                {id: '004', name: '温兆伦', age: 30, sex: '男'},
+            ]
+        },
+        filPersons: [],
+        watch: {
+            // //简写的话，刚开始不会出现数据，又不能使用immediate:true  不简写就可以使用immediate:true，先跑一遍
+            // keyWord(newValue) {
+            //     this.filPersons = this.persons.filter((person) => {
+            //         return person.name.indexOf(newValue) != -1
+            //         //字符串中有newValue这个字符结果就>=0，得出来的数字是字符在这个字符串中的下标。没有这个字符就得-1。看不懂去看数组的indexOf方法
+            //     })
+            // },
+
+            //不简写
+            keyWord: {
+                immediate: true,
+                handler(newValue) {
+                    this.filPersons = this.persons.filter((person) => {
+                        return person.name.indexOf(newValue) != -1
+                    })
+                }
+            },
+        }
+    })*/
+
+    //用computed实现
+    new Vue({
+        el:'#root',
+        data:{
+            keyWord:'',
+            persons: [
+                {id: '001', name: '马冬梅', age: 25, sex: '女'},
+                {id: '002', name: '周冬雨', age: 18, sex: '女'},
+                {id: '003', name: '周杰伦', age: 40, sex: '男'},
+                {id: '004', name: '温兆伦', age: 30, sex: '男'},
+            ]
+        },
+        computed:{
+            filPersons() {
+                //第二个return是filPersons规定的，要返回一个过滤的条件。
+                //第一个return是computed规定的，你不返回一个值，我怎么知道你的filPersons()是啥
+                return this.persons.filter((person)=>{
+                    return person.name.indexOf(this.keyWord) != -1
+                })
+            }
+        }
+    })
+</script>
+</html>

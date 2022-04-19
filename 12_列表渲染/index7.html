@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟一个数据监测</title>
+    <!--引入Vue-->
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+
+</body>
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+    let data = {
+        name: '尚硅谷',
+        address: '北京'
+    }
+    // let tmp = '尚硅谷'
+    // setTimeout(() =>{
+    //     if (data.name != tmp) {
+    //         tmp = data.name
+    //         console.log('name被修改了')
+    //     }
+    // },100)
+
+    // Object.defineProperty(data,'name',{
+    //     get(){
+    //         return data.name
+    //     },
+    //     set(newValue){
+    //         data.name = newValue
+    //     }
+    // })
+
+    //创建一个监视的实例对象，用于监视data中属性的变化
+    const obs = new Observer(data)
+    console.log(obs)
+
+    //准备一个vm实例对象
+    let vm = {}
+    vm._data = data = obs
+
+    function Observer(obj) {
+        //汇总对象中所有的属性形成一个数组
+        const keys = Object.keys(obj)
+        //遍历 k作为拿到的形参
+        keys.forEach((k) => {
+            //this指的是Observer创建的实例对象就是obs，往obs身上添加一个属性，添加的就是读取的k的值
+            Object.defineProperty(this, k, {
+                get() {
+                    return obj[k]
+                },
+                set(newValue) {
+                    console.log(`${k}被改了，我要去解析模板，生成虚拟DOM......我要开始忙了`)
+                    obj[k] = newValue
+                }
+            })
+        })
+    }
+</script>
+</html>
